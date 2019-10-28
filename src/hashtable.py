@@ -51,8 +51,10 @@ class HashTable:
 
         Fill this in.
         '''
+        print(f"input - key: {key}, value: {value}")
         index = self._hash_mod(key)
         self.storage[index] = value
+        print(f"output - key: {index}, value: {self.storage[index]}")
 
     def remove(self, key):
         '''
@@ -63,7 +65,7 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
-        if self.storage[index] = None:
+        if self.storage[index] == None:
             print("Key not found.")
             return
         if self.storage[index] != None:
@@ -78,7 +80,9 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
-        if self.storage[index] = None:
+        print(f"storage: {self.storage[index]}")
+        print(f"index: {index}")
+        if self.storage[index] == None:
             print("Key not found.")
             return
         return self.storage[index]
@@ -90,7 +94,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity = self.capacity * 2
+        new_storage = [None] * (self.capacity)
+        for n in range(0, (self.capacity//2)):
+            print(f"n: {n}")
+            print(f"self store: {self.storage[n]}")
+            new_storage[n] = self.storage[n]
+            print(f"new store: {new_storage[n]}")
+        self.storage = new_storage
 
 
 if __name__ == "__main__":
