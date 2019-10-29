@@ -51,10 +51,22 @@ class HashTable:
 
         Fill this in.
         '''
-        print(f"input - key: {key}, value: {value}")
+
         index = self._hash_mod(key)
-        self.storage[index] = value
-        print(f"output - key: {index}, value: {self.storage[index]}")
+        current = self.storage[index]
+        end = None
+        # self.storage[index] = value  <---won't work with collisions
+        if self.storage != None:
+            print(f'Collision at key: {key}')
+        while current is not None and current.key != key:
+            end = current
+            current = end.next
+        if current:
+            current.value = value
+        else:
+            new_linked = LinkedPair(key, value)
+            new_linked.next = self.storage[index]  # moving it
+            self.storage[index] = new_linked
 
     def remove(self, key):
         '''
@@ -67,8 +79,7 @@ class HashTable:
         index = self._hash_mod(key)
         if self.storage[index] == None:
             print("Key not found.")
-            return
-        if self.storage[index] != None:
+        else:
             self.storage[index] = None
 
     def retrieve(self, key):
@@ -82,10 +93,11 @@ class HashTable:
         index = self._hash_mod(key)
         print(f"storage: {self.storage[index]}")
         print(f"index: {index}")
-        if self.storage[index] == None:
-            print("Key not found.")
-            return
-        return self.storage[index]
+        occupied = self.storage[index]
+        while occupied is not None:
+            if occupied.key == key:
+                return occupied.value
+            occupied = occupied.next  # run through the list
 
     def resize(self):
         '''
@@ -94,14 +106,18 @@ class HashTable:
 
         Fill this in.
         '''
+        previous_store = self.storage
         self.capacity = self.capacity * 2
-        new_storage = [None] * (self.capacity)
-        for n in range(0, (self.capacity//2)):
-            print(f"n: {n}")
-            print(f"self store: {self.storage[n]}")
-            new_storage[n] = self.storage[n]
-            print(f"new store: {new_storage[n]}")
-        self.storage = new_storage
+        self.storage = [None] * self.capacity
+        current = None
+
+        for item in previous_store:
+            current = item
+            while current is not None:
+                self.insert(current.key, current.value)
+                current = current.next
+
+# simplified this, I think
 
 
 if __name__ == "__main__":
