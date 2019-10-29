@@ -54,13 +54,13 @@ class HashTable:
 
         index = self._hash_mod(key)
         current = self.storage[index]
-        end = None
+        last = None
         # self.storage[index] = value  <---won't work with collisions
         if self.storage != None:
             print(f'Collision at key: {key}')
         while current is not None and current.key != key:
-            end = current
-            current = end.next
+            last = current
+            current = last.next
         if current:
             current.value = value
         else:
